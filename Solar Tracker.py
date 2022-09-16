@@ -4,10 +4,8 @@ from datetime import datetime
 import schedule, time
 wb = xl.Workbook('solarPanel.xlsx')
 ws = wb.add_worksheet('A Test Sheet')
+print("workbook added")
 
-#style0 = xl.easyxf('font: name Times New Roman, color-index red, bold on',
-#    num_format_str='#,##0.00')
-#style1 = xl.easyxf(num_format_str='D-MMM-YY')
 
 from pyephem_sunpath.sunpath import sunpos
 from altitudo import altitudo
@@ -24,6 +22,8 @@ ws.write(0, 3, "Elevation")
 ws.write(0, 4, "Altitude")
 ws.write(0, 5, "Azimuth")
 
+print("row 1 added")
+
 i = 0
 
 def addRow():
@@ -36,6 +36,7 @@ def addRow():
     date = datetime.now()
     tz = -4
     alt, azm = sunpos(date, lat, lon, tz, dst=True)
+    print("sunpos gotten")
 
     ws.write(i, 0, datetime.now())
     ws.write(i, 1, lat)
@@ -44,13 +45,13 @@ def addRow():
     ws.write(i, 4, alt)
     ws.write(i, 5, azm)
     i += 1
-
+    wb.close()
+    print("wb closed")
 
 schedule.every(1).seconds.do(addRow)
+print('run once')
 
 while True:
     schedule.run_pending()
     time.sleep(1)
-
-wb.close()
 
