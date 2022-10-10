@@ -1,10 +1,13 @@
 import csv
 from pyephem_sunpath.sunpath import sunpos
-from datetime import date, datetime
+from datetime import datetime
 from altitudo import altitudo
 from geopy.geocoders import Nominatim
-import schedule, time
+import schedule
 
+header = ['Date', 'Latitude', 'Longitude','Elvation','Altitude',"Azimuth"]
+filename = 'Solar_Tracking.csv'
+a = True
 
 def job():
 
@@ -21,26 +24,27 @@ def job():
     tz = -4
     global rounded_alt
     global rounded_azm
-    alt, azm = sunpos(exact_date, lat, lon, tz, dst=True)
+    alt, azm = sunpos(exact_date, lat, lon, tz, dst=False)
     rounded_alt = round(alt,5)
     rounded_azm = round(azm,5)
+    print("azimuth calcuated")
     global data
     data = [str(exact_date),str(lat),str(lon),str(elv),str(rounded_alt) + ("°"),str(rounded_azm) + ("°")]
-job()
-def csv_log():
-    header = ['Date', 'Latitude', 'Longitude','Elvation','Altitude',"Azimuth"]
-    filename = 'Solar_Tracking.csv'
-    with open(filename, 'w', newline="" ) as file:
+    global a
+    with open(filename, 'a', newline="\n" ) as file:
         csvwriter = csv.writer(file)
-        csvwriter.writerow(header)
-        csvwriter.writerow(data) 
-    
-csv_log()
+        if a:
+          csvwriter.writerow(header)
+          a = False
+        csvwriter.writerow(data)
+
+job()
+
    
 
-schedule.every(3).seconds.do(job)
-schedule.every(3).seconds.do(csv_log)
+schedule.every(7).minutes.do(job)
+
 
 while True:
     schedule.run_pending()
-    time.sleep(1)
+  
