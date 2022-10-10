@@ -1,45 +1,46 @@
-import xlsxwriter as xl
-from datetime import datetime
-import schedule, time
-wb = xl.Workbook('solarPanel.xlsx')
-ws = wb.add_worksheet('A Test Sheet')
-print("WorkBook Added")
-
-
+import csv
 from pyephem_sunpath.sunpath import sunpos
+from datetime import date, datetime
 from altitudo import altitudo
 from geopy.geocoders import Nominatim
+import schedule, time
 
 
+def job():
 
-
-i = 0
-
-def addRow():
-    global i
+    #getting lon/lat
     geolocator = Nominatim(user_agent="Solar Tracker")
     location = geolocator.geocode("201 Walt Banks Rd, Peachtree City, GA 30269")
+    exact_date = datetime.now()
+    global lat
     lat = location.latitude
+    global lon
     lon = location.longitude
+    global elv
     elv = altitudo(lat=lat, lon=lon)
-    date = datetime.now()
     tz = -4
-    alt, azm = sunpos(date, lat, lon, tz, dst=True)
-    print("Sun Position Acheived")
+    global rounded_alt
+    global rounded_azm
+    alt, azm = sunpos(exact_date, lat, lon, tz, dst=True)
+    rounded_alt = round(alt,5)
+    rounded_azm = round(azm,5)
+    global data
+    data = [str(exact_date),str(lat),str(lon),str(elv),str(rounded_alt) + ("°"),str(rounded_azm) + ("°")]
+job()
+def csv_log():
+    header = ['Date', 'Latitude', 'Longitude','Elvation','Altitude',"Azimuth"]
+    filename = 'Solar_Tracking.csv'
+    with open(filename, 'w', newline="" ) as file:
+        csvwriter = csv.writer(file)
+        csvwriter.writerow(header)
+        csvwriter.writerow(data) 
+    
+csv_log()
+   
 
-    ws.write(i, 0, datetime.now())
-    ws.write(i, 1, lat)
-    ws.write(i, 2, lon)
-    ws.write(i, 3, elv)
-    ws.write(i, 4, alt)
-    ws.write(i, 5, azm)
-    i += 1
-    wb.close()
-    print("WorkBook Closed")
-
-schedule.every(1).seconds.do(addRow)
-print('run once')
+schedule.every(3).seconds.do(job)
+schedule.every(3).seconds.do(csv_log)
 
 while True:
     schedule.run_pending()
-    time.sleep(10)
+    time.sleep(1)
