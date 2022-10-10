@@ -42,7 +42,7 @@ job()
 
    
 
-schedule.every(7).minutes.do(job)
+schedule.every(10).minutes.do(job)
 
 
 while True:
