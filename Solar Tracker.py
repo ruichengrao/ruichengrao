@@ -1,5 +1,4 @@
 #import package/modules
-
 import csv
 from pyephem_sunpath.sunpath import sunpos
 from datetime import datetime
