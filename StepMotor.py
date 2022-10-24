@@ -73,9 +73,8 @@ index1 = csvreader.line_num - 3
  
 for row in rows[index1:index2]:
     # parsing each column of a row
-    for col in row:
-        difference = rounded_azm - float(col)
-        rounded_diff = round(difference, 2)
+    difference = rounded_azm - float(row)
+    angle_diff = round(difference, 3)
     
 
 #setting up pins
@@ -85,16 +84,16 @@ DIR = 20   # Direction GPIO Pin
 STEP = 21  # Step GPIO Pin
 CW = 1     # Clockwise Rotation
 CCW = 0    # Counterclockwise Rotation
-SPR = 64   # Steps per Revolution (360 / 5.625)
+SPR = 64   # Steps per Revolution 2038 (360 / 5.625)
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(DIR, GPIO.OUT)
 GPIO.setup(STEP, GPIO.OUT)
 GPIO.output(DIR, CW)
 
-
 def runner():
-    step_count= rounded_diff / 5.625
+    # Calculating step count
+    step_count= angle_diff / 5.625
 
     roundedSteps = round(step_count, 0)
     delay = 0.0156
