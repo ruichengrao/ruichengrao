@@ -1,5 +1,10 @@
 import RPi.GPIO as GPIO
-import time
+import csv
+import schedule
+#csv header/stated file
+header = ["Volt"]
+filename = 'Volt_Tracking.csv'
+a = True
 
 AO_pin = 0 #flame sensor AO connected to ADC chanannel 0
 # change these as desired - they're the pins connected from the
@@ -56,26 +61,22 @@ def readadc(adcnum, clockpin, mosipin, misopin, cspin):
         return adcout
 
 def main():
-         init()
-         time.sleep(2)
-         print"will detect voltage"
-         while True:
-                  ad_value = readadc(AO_pin, SPICLK, SPIMOSI, SPIMISO, SPICS)
-                  voltage= ad_value*(3.3/1024)*5
-                  print"***********"
-                  print " Voltage is: " + str("%.2f"%voltage)+"V"
-                  print"***********"
-                  print' '
-                  time.sleep(0.5)
-                  
-                           
-        
+        init()
+        while True:
+                ad_value = readadc(AO_pin, SPICLK, SPIMOSI, SPIMISO, SPICS)
+                global voltage
+                voltage = ad_value*(3.3/1024)*5
+                global volts
+                volts = [str(voltage)]
+                with open(filename, 'a', newline="\n") as file:
+                        csvwriter = csv.writer(file)
+                        #skips header line after the first run
+                        if a:
+                         csvwriter.writerow(header)
+                         a = False
+                         csvwriter.writerow(volts)
+                                
+                GPIO.cleanup() 
+          
 
-if __name__ =='__main__':
-         try:
-                  main()
-         except KeyboardInterrupt:
-                  pass
-GPIO.cleanup() 
-          
-          
+schedule.every(5).minutes.do(main)
