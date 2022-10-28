@@ -24,10 +24,6 @@ def job():
     #getting date
     exact_date = datetime.now()
 
-    #getting elvation
-    global elv
-    elv = altitudo(lat=lat, lon=lon)
-
     #getting azimuth
     tz = -4
     global rounded_alt
