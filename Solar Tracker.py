@@ -2,12 +2,11 @@
 import csv
 from pyephem_sunpath.sunpath import sunpos
 from datetime import datetime
-from altitudo import altitudo
 from geopy.geocoders import Nominatim
 import schedule
 
 #csv header/stated file
-header = ['Date', 'Latitude', 'Longitude','Elvation','Altitude',"Azimuth"]
+header = ["Azimuth"]
 filename = 'Solar_Tracking.csv'
 a = True
 
@@ -39,7 +38,7 @@ def job():
     print("azimuth calcuated")
     #csv data
     global data
-    data = [str(exact_date),str(lat),str(lon),str(elv),str(rounded_alt) + ("°"),str(rounded_azm) + ("°")]
+    data = [str(rounded_azm)]
     global a
     with open(filename, 'a', newline="\n") as file:
         csvwriter = csv.writer(file)
