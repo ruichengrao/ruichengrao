@@ -48,7 +48,7 @@ job()
 
 #call every x min/sec
 
-schedule.every(5).seconds.do(job)
+schedule.every(5).minutes.do(job)
 
 
 while True:
