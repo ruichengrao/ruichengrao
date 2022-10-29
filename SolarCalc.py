@@ -31,7 +31,6 @@ def job():
     alt, azm = sunpos(exact_date, lat, lon, tz, dst=False)
     rounded_alt = round(alt,5)
     rounded_azm = round(azm,5)
-    print("azimuth calcuated")
     #csv data
     global data
     data = [str(rounded_azm)]
