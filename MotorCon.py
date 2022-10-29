@@ -25,7 +25,7 @@ tz = -4
 global rounded_alt
 global rounded_azm
 alt, azm = sunpos(exact_date, lat, lon, tz, dst=False)
-rounded_alt = round(alt,5)
+global rounded_azm
 rounded_azm = round(azm,5)
 
 # csv file name
@@ -52,7 +52,7 @@ index1 = csvreader.line_num - 3
  
 for row in rows[index1:index2]:
     # parsing each column of a row
-    difference = rounded_azm - int(row)
+    difference = rounded_azm - str(row)
     angle_diff = round(difference, 3)
     
 def runner():
