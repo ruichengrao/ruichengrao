@@ -52,7 +52,7 @@ index1 = csvreader.line_num - 3
  
 for row in rows[index1:index2]:
     # parsing each column of a row
-    difference = rounded_azm - float(row)
+    difference = rounded_azm - str(row)
     angle_diff = round(difference, 3)
     
 def runner():
