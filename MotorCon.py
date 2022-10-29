@@ -52,7 +52,7 @@ index1 = csvreader.line_num - 3
  
 for row in rows[index1:index2]:
     # parsing each column of a row
-    difference = rounded_azm - str(row)
+    difference = rounded_azm - int(row)
     angle_diff = round(difference, 3)
     
 def runner():
@@ -60,7 +60,7 @@ def runner():
     step_count= angle_diff / 5.625
     global round_step
     round_step = round(step_count, 0)
-    print(round_step)
+
     
 
 
