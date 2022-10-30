@@ -25,8 +25,7 @@ tz = -4
 global rounded_alt
 global rounded_azm
 alt, azm = sunpos(exact_date, lat, lon, tz, dst=False)
-global rounded_azm
-rounded_azm = round(azm,5)
+rounded_azm = round(azm,0)
 
 # csv file name
 filename = "Solar_Tracking.csv"
@@ -51,23 +50,46 @@ index1 = csvreader.line_num - 3
 
  
 for row in rows[index1:index2]:
+    global GRow
+    GRow = row
     # parsing each column of a row
-    difference = rounded_azm - str(row)
-    angle_diff = round(difference, 3)
+
     
+def listToString(s):
+
+	# initialize an empty string
+	str1 = ""
+
+	# traverse in the string
+	for ele in s:
+		str1 += ele
+
+	# return string
+	return str1
+
+
+# Driver code
+
+strAzm = listToString(GRow)
+floAzm = float(strAzm)
+rounded_strAzm = round(floAzm, 0)
+difference = int(rounded_azm) - int(rounded_strAzm)
+print(difference)
+
 def runner():
     # Calculating step count
-    step_count= angle_diff / 5.625
+    step_count = difference / 5.625
     global round_step
     round_step = round(step_count, 0)
+    print(round_step)
 
-    
+runner()
 
+def motorCon():
+    GpioPins = [18, 23, 24, 25]
+    mymotortest = RpiMotorLib.BYJMotor("MyMotorOne", "28BYJ")
+    mymotortest.motor_run(GpioPins, .01, round_step, False, True, "half", .05)
 
-GpioPins = [18, 23, 24, 25]
+motorCon()
 
-
-mymotortest = RpiMotorLib.BYJMotor("MyMotorOne", "28BYJ")
-
-
-mymotortest.motor_run(GpioPins, .01, round_step, False, True, "half", .05)
+schedule.every(5).minutes.do(motorCon)
