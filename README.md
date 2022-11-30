@@ -10,9 +10,9 @@
 
 
 - 🌱 I’m currently learning:
-  - Java
+  - Java 
   - SQL
-  - HTML/JS/CSS
+  - HTML/JS/CSS (Getting Better...Especially JS)
 
 <!---
 ruichengrao/ruichengrao is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
