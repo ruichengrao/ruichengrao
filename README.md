@@ -15,7 +15,7 @@
   - HTML/JS/CSS (Getting Better...Especially JS)
   
  - 📫 How to reach me: 
-  - ruichengrao07@gmail.com
+    - ruichengrao07@gmail.com
 
 <!---
 ruichengrao/ruichengrao is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
