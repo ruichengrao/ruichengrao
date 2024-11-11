@@ -1,8 +1,4 @@
-- 👋 Hi, I’m Ruicheng
 
-  - He/Him
-  - Be someone your younger self would look up to...
-  - Be happy :)
 
 
 - 👀 I’m interested in IT/AI/Data Collecting 
